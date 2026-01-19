@@ -1,11 +1,11 @@
 # Pixel Coordinate Prediction API
 
-A FastAPI-based web service that predicts pixel coordinates from input images using a deep learning model.
+A Flask-based web service that predicts pixel coordinates from input images using a deep learning model.
 
 ## Features
 
 - Accepts image uploads and returns predicted (x, y) coordinates
-- Built with FastAPI for high performance
+- Built with Flask for high performance
 - Preprocesses images to enhance signal and reduce noise
 - Includes Swagger UI documentation at `/docs`
 
@@ -33,7 +33,16 @@ A FastAPI-based web service that predicts pixel coordinates from input images us
    pip install -r requirements.txt
    ```
 
-4. Place your model file (`pixel_coordinate_regressor.keras`) in the project root directory.
+4. Set up environment variables:
+   ```bash
+   # Copy the example environment file
+   cp .env.example .env
+   
+   # Edit the .env file with your configuration
+   # (The file is in .gitignore for security)
+   ```
+
+5. Place your model file (`pixel_coordinate_regressor.keras`) in the project root directory or update `MODEL_PATH` in your `.env` file.
 
 ## Usage
 
@@ -41,15 +50,21 @@ A FastAPI-based web service that predicts pixel coordinates from input images us
 
 Start the development server:
 ```bash
-uvicorn app:app --reload
+flask run --host=0.0.0.0 --port=5000
 ```
 
-The API will be available at `http://127.0.0.1:8000`
+The API will be available at `http://127.0.0.1:5000`
 
 ### API Endpoints
 
 - `GET /`: Health check endpoint
 - `POST /predict`: Accepts an image file and returns predicted coordinates
+
+Example request using `curl`:
+
+```bash
+curl -X POST -F 'file=@path_to_your_image.png' http://localhost:5000/predict
+```
 
 ### Example Request
 
@@ -82,14 +97,31 @@ This application includes a `render.yaml` configuration file for easy deployment
 
 ### Environment Variables
 
-- `PORT`: Port number to run the server on (default: 8000)
-- `MODEL_PATH`: Path to the model file (default: "pixel_coordinate_regressor.keras")
+Create a `.env` file in the project root with the following variables:
+
+```
+# Server Configuration
+PORT=8000
+HOST=0.0.0.0
+
+# Application Settings
+MODEL_PATH=pixel_coordinate_regressor.keras
+IMAGE_SIZE=50
+
+# Environment (development/production)
+ENV=development
+
+# CORS Settings (for development, restrict in production)
+ALLOWED_ORIGINS=*
+```
+
+You can copy `.env.example` to `.env` as a starting point.
 
 ## Development
 
 ### Testing
 
-To test the API locally, you can use the interactive documentation at `http://127.0.0.1:8000/docs` or tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/).
+To test the API locally, you can use tools like [Postman](https://www.postman.com/) or [curl](https://curl.se/).
 
 ## Model Information
 

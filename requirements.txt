@@ -1,7 +1,9 @@
 fastapi
 uvicorn[standard]
-gunicorn
+flask
 tensorflow
 numpy
 pillow
+flask-cors
+gunicorn
 python-multipart
