@@ -98,3 +98,4 @@ The model expects input images of size 50x50 pixels and outputs a heatmap from w
 ## License
 
 [Specify your license here]# Pixel_Coordinate_Prediction
+# Pixel_Coordinate_Prediction
