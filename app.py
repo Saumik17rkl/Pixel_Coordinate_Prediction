@@ -1,17 +1,35 @@
+import os
 from fastapi import FastAPI, UploadFile, File, HTTPException
 import numpy as np
 import tensorflow as tf
 from PIL import Image
 import io
+from fastapi.middleware.cors import CORSMiddleware
 
 # -------------------------
 # App initialization
 # -------------------------
 
-app = FastAPI(title="Pixel Coordinate Heatmap API")
+app = FastAPI(
+    title="Pixel Coordinate Heatmap API",
+    description="API for predicting pixel coordinates from images",
+    version="1.0.0"
+)
 
-MODEL_PATH = "pixel_coordinate_regressor.keras"
-IMAGE_SIZE = 50
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # In production, replace "*" with specific origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Configuration
+MODEL_PATH = os.getenv("MODEL_PATH", "pixel_coordinate_regressor.keras")
+IMAGE_SIZE = int(os.getenv("IMAGE_SIZE", "50"))
+HOST = os.getenv("HOST", "0.0.0.0")
+PORT = int(os.getenv("PORT", "8000"))
 
 model = tf.keras.models.load_model(MODEL_PATH)
 
